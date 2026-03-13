@@ -438,6 +438,14 @@
             background: var(--bg-color);
             border-radius: 100px;
             transition: var(--transition);
+            max-width: 100%;
+        }
+
+        .link-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
         }
 
         .contact-link:hover {
@@ -508,7 +516,8 @@
             
             .contact-link {
                 width: 100%;
-                max-width: 300px;
+                max-width: 100%;
+                padding: 1rem 1.5rem;
                 justify-content: center;
             }
             
@@ -685,13 +694,13 @@
                 
                 <div class="contact-links">
                     <a href="mailto:pjagadish781@gmail.com" class="contact-link">
-                        <span>📧</span> pjagadish781@gmail.com
+                        <span>📧</span> <span class="link-text">pjagadish781@gmail.com</span>
                     </a>
                     <a href="https://github.com/paras2611" target="_blank" rel="noopener noreferrer" class="contact-link">
-                        <span>💻</span> github.com/paras2611
+                        <span>💻</span> <span class="link-text">github.com/paras2611</span>
                     </a>
                     <a href="https://linkedin.com/in/paraspatil2611" target="_blank" rel="noopener noreferrer" class="contact-link">
-                        <span>👔</span> linkedin.com/paraspatil2611
+                        <span>👔</span> <span class="link-text">linkedin.com/paraspatil2611</span>
                     </a>
                 </div>
             </div>
