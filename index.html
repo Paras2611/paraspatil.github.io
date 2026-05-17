@@ -525,6 +525,52 @@
                 padding: 3rem 1.5rem;
             }
         }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary);
+            color: var(--surface);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 20px rgba(58, 90, 64, 0.2);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        /* Show button when scrolling down - Pure CSS hack or simple JS */
+        /* For pure CSS we can just keep it visible but subtle, or use a tiny JS script */
+        /* Let's use a tiny JS script as it's better for UX and the user did ask for "dynamic" previously */
+        .back-to-top.visible {
+            opacity: 0.9;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            opacity: 1;
+            transform: translateY(-5px);
+            background-color: var(--secondary);
+            box-shadow: 0 8px 30px rgba(58, 90, 64, 0.3);
+            color: var(--surface);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 42px;
+                height: 42px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -814,6 +860,23 @@
             <p>&copy; 2026 Paras Patil. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#hero" id="backToTop" class="back-to-top" title="Back to Top">
+        ↑
+    </a>
+
+    <!-- Simple JS for Scroll Visibility -->
+    <script>
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+    </script>
 
 </body>
 </html>
