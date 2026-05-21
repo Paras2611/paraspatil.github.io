@@ -339,7 +339,7 @@
             -webkit-backdrop-filter: blur(24px) saturate(180%);
             border-radius: var(--radius-lg);
             padding: 3rem;
-            transition: box-shadow 0.4s ease, border-color 0.4s ease, filter 0.1s ease-out, transform 0.1s ease-out;
+            transition: box-shadow 0.5s ease, border-color 0.5s ease, filter 0.1s linear, transform 0.1s linear;
             display: flex;
             flex-direction: column;
             /* Shadow pointing upwards softly to create separation when stacked */
@@ -361,6 +361,13 @@
         .project-card:nth-child(2) { top: 140px; z-index: 20; }
         .project-card:nth-child(3) { top: 170px; z-index: 30; }
         .project-card:nth-child(4) { top: 200px; z-index: 40; }
+
+        .project-card-inner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
 
         .project-card.pop-in {
             visibility: visible;
@@ -549,6 +556,25 @@
 
             section {
                 padding: 5rem 0;
+            }
+
+            .project-card {
+                padding: 1.5rem;
+            }
+            
+            .project-card-inner-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .project-card h3 {
+                font-size: 1.4rem !important;
+            }
+            
+            .tech-pill {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.75rem;
             }
 
             .contact-links {
@@ -830,7 +856,7 @@
                         <span class="tech-pill">Hibernate (JPA)</span>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+                    <div class="project-card-inner-grid">
                         <div>
                             <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🚀</span> Key Features</h4>
                             <ul class="project-features" style="margin-bottom: 0;">
@@ -894,7 +920,7 @@
                         <span class="tech-pill">Hardware Relays</span>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+                    <div class="project-card-inner-grid">
                         <div>
                             <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🚀</span> Key Features</h4>
                             <ul class="project-features" style="margin-bottom: 0;">
@@ -933,7 +959,7 @@
                         <span class="tech-pill">Image Processing Workflow</span>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+                    <div class="project-card-inner-grid">
                         <div>
                             <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🚀</span> Key Features</h4>
                             <ul class="project-features" style="margin-bottom: 0;">
@@ -1035,7 +1061,7 @@
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.6 // Trigger pop-in when card is 60% visible
+            threshold: 0.75 // Trigger pop-in when card is 75% visible
         };
 
         let delayCounter = 0;
@@ -1078,8 +1104,8 @@
                         // Must match CSS staggered gap (30px)
                         const stickyDistance = 30; 
                         
-                        // Start overlay effect when the next card is 60% revealed
-                        let startEffectY = windowHeight - (nextSibling.offsetHeight * 0.6);
+                        // Start overlay effect when the next card is 75% revealed
+                        let startEffectY = windowHeight - (nextSibling.offsetHeight * 0.75);
                         
                         // Fallback for very tall cards on small screens to ensure a transition distance
                         if (startEffectY < rect.top + 100) {
