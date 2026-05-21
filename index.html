@@ -334,31 +334,54 @@
         }
 
         .project-card {
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border-radius: var(--radius-lg);
             padding: 3rem;
-            transition: box-shadow 0.4s ease;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease, filter 0.1s ease-out, transform 0.1s ease-out;
             display: flex;
             flex-direction: column;
             /* Shadow pointing upwards softly to create separation when stacked */
-            box-shadow: 0 -8px 30px rgba(47, 62, 70, 0.05), var(--shadow-soft);
-            border: 1px solid var(--border);
+            box-shadow: 0 -8px 30px rgba(47, 62, 70, 0.05), 0 10px 40px rgba(47, 62, 70, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             
             /* Sticky Stack Core Effect */
             position: sticky;
-            top: 130px;
+            transform-origin: top center;
+            will-change: transform, filter; /* Optimized for animations */
+            
+            /* Prepare for pop-in animation */
+            opacity: 0;
+            visibility: hidden;
         }
 
-        /* Stacking offsets to give it a deck-of-cards appearance */
-        .project-card:nth-child(1) { top: 130px; z-index: 10; }
-        .project-card:nth-child(2) { top: 145px; z-index: 20; }
-        .project-card:nth-child(3) { top: 160px; z-index: 30; }
-        .project-card:nth-child(4) { top: 175px; z-index: 40; }
-        .project-card:nth-child(5) { top: 190px; z-index: 50; }
-        .project-card:nth-child(6) { top: 205px; z-index: 60; }
+        /* Staggered offsets for layered deck layout */
+        .project-card:nth-child(1) { top: 110px; z-index: 10; }
+        .project-card:nth-child(2) { top: 140px; z-index: 20; }
+        .project-card:nth-child(3) { top: 170px; z-index: 30; }
+        .project-card:nth-child(4) { top: 200px; z-index: 40; }
+
+        .project-card.pop-in {
+            visibility: visible;
+            animation: popCardAnim 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards;
+        }
+
+        @keyframes popCardAnim {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: none; /* Crucial for keeping position: sticky working post-animation */
+            }
+        }
 
         .project-card:hover {
-            box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.1), var(--shadow-hover);
+            transform: translateY(-5px) scale(1.02); /* Inline JS scales will beat this on background cards ensuring no jumps! */
+            box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.08), 0 20px 50px rgba(47, 62, 70, 0.15);
+            border-color: rgba(255, 255, 255, 1);
         }
 
         .project-card h3 {
@@ -689,6 +712,21 @@
                     </div>
                 </div>
 
+                <div class="skill-group">
+                    <h3>IoT & Embedded Systems</h3>
+                    <div class="skill-pills">
+                        <span class="pill">IoT Systems</span>
+                        <span class="pill">ESP8266 NodeMCU</span>
+                        <span class="pill">ESP32-CAM</span>
+                        <span class="pill">Arduino</span>
+                        <span class="pill">Embedded C++</span>
+                        <span class="pill">Sensor Networks</span>
+                        <span class="pill">Hardware Automation</span>
+                        <span class="pill">AI Integration Concept</span>
+                        <span class="pill">Real-Time Monitoring</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -837,6 +875,94 @@
         </div>
     </section>
 
+    <!-- IoT Projects Section -->
+    <section id="iot-projects" style="padding-top: 0;">
+        <div class="container">
+            <h2>IoT Projects</h2>
+            <div class="projects-grid">
+                
+                <!-- IoT Project 1 -->
+                <div class="project-card">
+                    <h3 style="margin-bottom: 0.5rem; font-size: 2rem;">Smart IoT Dashboard</h3>
+                    <p style="font-weight: 500; color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.1rem;">Temperature Analysis & Humidifier Automation</p>
+                    <p style="margin-bottom: 2rem; color: var(--ink-light); font-size: 1.05rem; max-width: 800px;">A smart IoT dashboard system using ESP8266 NodeMCU for real-time temperature and humidity analysis with automated humidifier control.</p>
+                    
+                    <div class="tech-stack" style="margin-bottom: 2.5rem;">
+                        <span class="tech-pill">ESP8266 NodeMCU</span>
+                        <span class="tech-pill">Embedded C++</span>
+                        <span class="tech-pill">HTML/CSS/JS</span>
+                        <span class="tech-pill">Hardware Relays</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+                        <div>
+                            <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🚀</span> Key Features</h4>
+                            <ul class="project-features" style="margin-bottom: 0;">
+                                <li>Real-time sensor monitoring (DHT11)</li>
+                                <li>Automated humidifier relay control</li>
+                                <li>Wi‑Fi web dashboard & visualization</li>
+                                <li>Manual/Auto humidifier modes</li>
+                                <li>Local hosting & firmware optimization</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🧠</span> Skills & Concepts</h4>
+                            <ul class="project-features" style="margin-bottom: 0;">
+                                <li>IoT System Design</li>
+                                <li>Embedded Programming</li>
+                                <li>Hardware-Software Communication</li>
+                                <li>Environmental Automation</li>
+                                <li>Embedded Debugging</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="project-outcome"><strong>📈 Outcome:</strong> Created an efficient environmental monitoring platform providing continuous data analysis and smart device automation.</p>
+                </div>
+
+                <!-- IoT Project 2 -->
+                <div class="project-card">
+                    <h3 style="margin-bottom: 0.5rem; font-size: 2rem;">Smart Parking System</h3>
+                    <p style="font-weight: 500; color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.1rem;">AI-Assisted Vehicle Detection</p>
+                    <p style="margin-bottom: 2rem; color: var(--ink-light); font-size: 1.05rem; max-width: 800px;">An AI-assisted smart parking management system using ESP32-CAM for capturing vehicle images and communicating with a backend server for ticket processing.</p>
+                    
+                    <div class="tech-stack" style="margin-bottom: 2.5rem;">
+                        <span class="tech-pill">ESP32-CAM</span>
+                        <span class="tech-pill">Embedded C++</span>
+                        <span class="tech-pill">HTTP/HTTPS</span>
+                        <span class="tech-pill">Image Processing Workflow</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+                        <div>
+                            <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🚀</span> Key Features</h4>
+                            <ul class="project-features" style="margin-bottom: 0;">
+                                <li>Live capture using ESP32-CAM</li>
+                                <li>HTTPS requests for secure transmission</li>
+                                <li>Automated ticket price calculation</li>
+                                <li>Server-side image processing concept</li>
+                                <li>Optimized streaming & light server</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 1.2rem; color: var(--ink); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🧠</span> Skills & Concepts</h4>
+                            <ul class="project-features" style="margin-bottom: 0;">
+                                <li>ESP32-CAM Configuration</li>
+                                <li>IoT Communication Protocols</li>
+                                <li>Backend REST Integration</li>
+                                <li>Smart Automation Systems</li>
+                                <li>Camera Streaming Systems</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="project-outcome"><strong>📈 Outcome:</strong> Developed a scalable hardware architecture to support modern AI-based parking enforcement and automation workflows.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- Documentation Section -->
     <section id="documentation" style="text-align: center; padding-top: 5rem;">
         <div class="container">
@@ -902,6 +1028,97 @@
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+
+        // Staggered Pop-In Animation for Project Cards
+        const projectCards = document.querySelectorAll('.project-card');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.6 // Trigger pop-in when card is 60% visible
+        };
+
+        let delayCounter = 0;
+        let lastTriggerTime = 0;
+
+        const cardObserver = new IntersectionObserver((entries) => {
+            const visibleEntries = entries.filter(e => e.isIntersecting)
+                                          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            
+            visibleEntries.forEach((entry) => {
+                const now = Date.now();
+                // Reset delay if more than 500ms has passed since last card popped
+                if (now - lastTriggerTime > 500) { 
+                    delayCounter = 0; 
+                }
+                lastTriggerTime = now;
+                
+                setTimeout(() => {
+                    entry.target.classList.add('pop-in');
+                }, delayCounter * 150);
+                
+                delayCounter++;
+                cardObserver.unobserve(entry.target);
+            });
+        }, observerOptions);
+
+        projectCards.forEach(card => cardObserver.observe(card));
+
+        // Sticky Overlay Dynamic Scale & Dim Transition
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(() => {
+                const windowHeight = window.innerHeight;
+                projectCards.forEach((card) => {
+                    const nextSibling = card.nextElementSibling;
+                    
+                    if (nextSibling && nextSibling.classList.contains('project-card')) {
+                        const rect = card.getBoundingClientRect();
+                        const nextRect = nextSibling.getBoundingClientRect();
+                        
+                        // Must match CSS staggered gap (30px)
+                        const stickyDistance = 30; 
+                        
+                        // Start overlay effect when the next card is 60% revealed
+                        let startEffectY = windowHeight - (nextSibling.offsetHeight * 0.6);
+                        
+                        // Fallback for very tall cards on small screens to ensure a transition distance
+                        if (startEffectY < rect.top + 100) {
+                            startEffectY = rect.top + 150;
+                        }
+                        
+                        const bottomTarget = rect.top + stickyDistance;
+                        
+                        if (nextRect.top > bottomTarget && nextRect.top <= startEffectY) {
+                            const totalTravel = startEffectY - bottomTarget;
+                            const currentTravel = startEffectY - nextRect.top;
+                            const progress = Math.max(0, Math.min(1, currentTravel / totalTravel));
+                            
+                            // Push back (scale down), Dim, and apply Liquid Glass Blur to hidden cards
+                            const scale = 1 - (0.08 * progress);
+                            const brightness = 1 - (0.35 * progress);
+                            const blurVal = 10 * progress;
+                            
+                            // Ensure we don't interrupt initial pop-in animation
+                            if (card.classList.contains('pop-in')) {
+                                card.style.transform = `scale(${scale})`;
+                                card.style.filter = `brightness(${brightness}) blur(${blurVal}px)`;
+                            }
+                        } else if (nextRect.top <= bottomTarget) {
+                            // Lock in the fully pushed-back state when covered
+                            if (card.classList.contains('pop-in')) {
+                                card.style.transform = 'scale(0.92)';
+                                card.style.filter = 'brightness(0.65) blur(10px)';
+                            }
+                        } else if (nextRect.top > startEffectY) {
+                            // Reset state when un-scrolled
+                            if (card.style.transform) {
+                                card.style.transform = '';
+                                card.style.filter = '';
+                            }
+                        }
+                    }
+                });
+            });
         });
     </script>
 
