@@ -96,13 +96,20 @@
             transform: translateX(-50%);
             width: 90%;
             max-width: 700px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: transparent;
             border-radius: 100px;
             z-index: 1000;
-            box-shadow: var(--shadow-soft);
-            transition: var(--transition);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        header.scrolled {
+            top: 1.5rem;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(47, 62, 70, 0.08); /* Soft shadow using ink color */
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         nav {
@@ -318,27 +325,40 @@
             border-color: var(--accent);
         }
 
-        /* Projects Section */
+        /* Projects Section (Sticky Stacking Cards Effect) */
         .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem;
+            padding-bottom: 2rem;
         }
 
         .project-card {
             background: var(--surface);
             border-radius: var(--radius-lg);
             padding: 3rem;
-            transition: var(--transition);
+            transition: box-shadow 0.4s ease;
             display: flex;
             flex-direction: column;
-            box-shadow: var(--shadow-soft);
+            /* Shadow pointing upwards softly to create separation when stacked */
+            box-shadow: 0 -8px 30px rgba(47, 62, 70, 0.05), var(--shadow-soft);
             border: 1px solid var(--border);
+            
+            /* Sticky Stack Core Effect */
+            position: sticky;
+            top: 130px;
         }
 
+        /* Stacking offsets to give it a deck-of-cards appearance */
+        .project-card:nth-child(1) { top: 130px; z-index: 10; }
+        .project-card:nth-child(2) { top: 145px; z-index: 20; }
+        .project-card:nth-child(3) { top: 160px; z-index: 30; }
+        .project-card:nth-child(4) { top: 175px; z-index: 40; }
+        .project-card:nth-child(5) { top: 190px; z-index: 50; }
+        .project-card:nth-child(6) { top: 205px; z-index: 60; }
+
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
+            box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.1), var(--shadow-hover);
         }
 
         .project-card h3 {
@@ -576,7 +596,7 @@
 <body>
 
     <!-- Floating Navigation -->
-    <header>
+    <header id="main-header">
         <nav>
             <a href="#hero" class="logo">Paras Patil.</a>
             <div class="nav-links">
@@ -759,7 +779,7 @@
             <h2>Java Projects</h2>
             <div class="projects-grid">
                 
-                <div class="project-card" style="grid-column: 1 / -1;">
+                <div class="project-card">
                     <h3 style="margin-bottom: 0.5rem; font-size: 2rem;">Hostel Connect</h3>
                     <p style="font-weight: 500; color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.1rem;">Hostel Management System</p>
                     <p style="margin-bottom: 2rem; color: var(--ink-light); font-size: 1.05rem; max-width: 800px;">A scalable backend system built using Spring Boot to manage hostel operations like room allocation, student records, and bookings efficiently.</p>
@@ -869,11 +889,18 @@
     <!-- Simple JS for Scroll Visibility -->
     <script>
         const backToTop = document.getElementById('backToTop');
+        const header = document.getElementById('main-header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 500) {
                 backToTop.classList.add('visible');
             } else {
                 backToTop.classList.remove('visible');
+            }
+            
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
         });
     </script>
