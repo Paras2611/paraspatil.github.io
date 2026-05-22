@@ -94,8 +94,8 @@
             top: 2rem;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 700px;
+            width: 95%;
+            max-width: 950px;
             background: transparent;
             border-radius: 100px;
             z-index: 1000;
@@ -140,6 +140,64 @@
 
         .nav-links a:hover {
             color: var(--primary);
+        }
+
+        .resume-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(58, 90, 64, 0.05);
+            border-radius: 100px;
+            padding: 0.35rem 0.35rem 0.35rem 1.25rem;
+            border: 1px solid rgba(58, 90, 64, 0.1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .resume-actions:hover {
+            border-color: rgba(58, 90, 64, 0.25);
+            background: rgba(58, 90, 64, 0.08);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(58, 90, 64, 0.08);
+        }
+        
+        .btn-view-resume {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-view-resume:hover {
+            color: var(--secondary);
+        }
+        
+        .btn-download-resume {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--primary);
+            text-decoration: none;
+            border: 1px solid rgba(58, 90, 64, 0.15);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .btn-download-resume:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: scale(1.08);
+            border-color: var(--primary);
+        }
+
+        .btn-download-resume svg {
+            width: 18px;
+            height: 18px;
         }
 
         /* Hero Section */
@@ -644,7 +702,27 @@
             }
 
             .logo {
-                margin: 0 auto;
+                font-size: 1.1rem;
+            }
+
+            .resume-actions {
+                gap: 0.25rem;
+                padding: 0.25rem 0.25rem 0.25rem 0.8rem;
+            }
+
+            .btn-view-resume {
+                font-size: 0.8rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .btn-download-resume {
+                width: 32px;
+                height: 32px;
+            }
+
+            .btn-download-resume svg {
+                width: 16px;
+                height: 16px;
             }
 
             section {
@@ -707,6 +785,179 @@
             }
         }
 
+        /* Resume Section CSS */
+        .resume-preview-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .resume-preview-card {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px rgba(47, 62, 70, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .resume-preview-card:has(.pdf-viewer-container:focus) {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(58, 90, 64, 0.15), 0 10px 40px rgba(47, 62, 70, 0.1);
+        }
+
+        .resume-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .resume-filename {
+            font-weight: 600;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .resume-filename svg {
+            color: var(--primary);
+        }
+
+        .resume-preview-body {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            background: #323639; /* Chrome PDF viewer background */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-bottom-left-radius: var(--radius-lg);
+            border-bottom-right-radius: var(--radius-lg);
+        }
+
+        .pdf-viewer-container {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .pdf-viewer-container:focus {
+            outline: none;
+        }
+
+        #pdf-canvas {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: block;
+        }
+
+        .pdf-controls {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(32, 33, 36, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 100px;
+            gap: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .pdf-page-controls {
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.9;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pdf-zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-left: 16px;
+        }
+
+        .pdf-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            opacity: 0.8;
+            padding: 0;
+        }
+
+        .pdf-btn:hover {
+            background: rgba(255,255,255,0.15);
+            opacity: 1;
+        }
+
+        .pdf-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-download-solid {
+            background: var(--primary);
+            color: var(--surface);
+            text-decoration: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(58, 90, 64, 0.15);
+        }
+
+        .btn-download-solid:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(58, 90, 64, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .resume-preview-header {
+                padding: 1.25rem 1.5rem;
+                flex-direction: column;
+                gap: 1.25rem;
+                text-align: center;
+            }
+        }
+
         /* Back to Top Button */
         .back-to-top {
             position: fixed;
@@ -765,6 +1016,14 @@
                 <a href="#skills">Skills</a>
                 <a href="#projects">Projects</a>
                 <a href="#contact">Contact</a>
+            </div>
+            <div class="resume-actions">
+                <a href="#resume" class="btn-view-resume">
+                    View Resume
+                </a>
+                <a href="https://github.com/Paras2611/paraspatil.github.io/raw/cb821ac60bdc620dea0ae8dd9bc9a769868ff3a2/public/ParasPatil-Resume.pdf" download class="btn-download-resume" title="Download Resume">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                </a>
             </div>
         </nav>
     </header>
@@ -1092,6 +1351,49 @@
         </div>
     </section>
 
+    <!-- Resume Preview Section -->
+    <section id="resume" class="split-section" style="padding-top: 5rem; display: none;">
+        <div class="container">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto;">
+                <h2>My Resume</h2>
+                <p class="section-subtitle">Take a look at my qualifications and professional experience.</p>
+                
+                <div class="resume-preview-wrapper">
+                    <div class="resume-preview-card">
+                        <div class="resume-preview-header">
+                            <div class="resume-filename">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                ParasPatil-Resume.pdf
+                            </div>
+                            <a href="https://github.com/Paras2611/paraspatil.github.io/raw/cb821ac60bdc620dea0ae8dd9bc9a769868ff3a2/public/ParasPatil-Resume.pdf" download class="btn-download-solid">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                Download Complete PDF
+                            </a>
+                        </div>
+                        <div class="resume-preview-body" id="pdf-container">
+                            <div class="pdf-viewer-container" tabindex="0" aria-label="PDF Document Viewer, use arrow keys to navigate pages">
+                                <canvas id="pdf-canvas"></canvas>
+                            </div>
+                            <div class="pdf-controls">
+                                <div class="pdf-page-controls">
+                                    <span>Page <span id="page_num">1</span> / <span id="page_count">1</span></span>
+                                </div>
+                                <div class="pdf-zoom-controls">
+                                    <button id="zoom_out" class="pdf-btn" aria-label="Zoom Out" title="Zoom Out">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    </button>
+                                    <button id="zoom_in" class="pdf-btn" aria-label="Zoom In" title="Zoom In">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact">
         <div class="container">
@@ -1136,10 +1438,27 @@
                 if (targetId === '#') return;
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    if (targetId === '#resume') {
+                        if (targetElement.style.display === 'none' || targetElement.style.display === '') {
+                            targetElement.style.display = 'block';
+                            this.textContent = 'Hide Resume';
+                            // Short delay to let the browser process display: block before animating
+                            setTimeout(() => {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 50);
+                        } else {
+                            targetElement.style.display = 'none';
+                            this.textContent = 'View Resume';
+                        }
+                    } else {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
             });
         });
@@ -1280,6 +1599,216 @@
             }
         }, { passive: true });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+        // URL to the PDF
+        const pdfUrl = "https://raw.githubusercontent.com/Paras2611/paraspatil.github.io/cb821ac60bdc620dea0ae8dd9bc9a769868ff3a2/public/ParasPatil-Resume.pdf";
+        
+        let pdfDoc = null,
+            pageNum = 1,
+            baseScale = 1.0,
+            scaleMultiplier = 1.0,
+            canvas = document.getElementById('pdf-canvas'),
+            ctx = canvas.getContext('2d'),
+            container = document.querySelector('.pdf-viewer-container');
+
+        // Function to set the base scale depending on container width
+        function calculateBaseScale(page) {
+            const viewport = page.getViewport({ scale: 1.0 });
+            const containerWidth = container.clientWidth - 40; 
+            const calculatedScale = containerWidth / viewport.width;
+            return Math.min(calculatedScale, 1.5);
+        }
+
+        function renderPageHighRes(num) {
+            pdfDoc.getPage(num).then(function(page) {
+                if (baseScale === 1.0) {
+                   baseScale = calculateBaseScale(page);
+                }
+                
+                // Render at a high resolution (2x of base) to avoid blurriness when zooming
+                const renderScale = baseScale * 2.5; 
+                const viewport = page.getViewport({ scale: renderScale });
+                
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                
+                page.render(renderContext);
+                updateCanvasStyleSize(page);
+            });
+            document.getElementById('page_num').textContent = num;
+        }
+
+        function updateCanvasStyleSize(page) {
+            const currentScale = baseScale * scaleMultiplier;
+            const styleViewport = page.getViewport({ scale: currentScale });
+            canvas.style.width = styleViewport.width + 'px';
+            canvas.style.height = styleViewport.height + 'px';
+            
+            if (scaleMultiplier > 1.0) {
+                container.style.cursor = 'grab';
+            } else {
+                container.style.cursor = 'auto';
+            }
+        }
+
+        function applyZoom() {
+            if (pdfDoc) {
+                pdfDoc.getPage(pageNum).then(function(page) {
+                    updateCanvasStyleSize(page);
+                });
+            }
+        }
+
+        // Drag to pan functionality
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        container.addEventListener('mousedown', (e) => {
+            if (scaleMultiplier <= 1.0) return;
+            isDragging = true;
+            container.style.cursor = 'grabbing';
+            startX = e.pageX - container.offsetLeft;
+            startY = e.pageY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.style.cursor = scaleMultiplier > 1.0 ? 'grab' : 'auto';
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.style.cursor = scaleMultiplier > 1.0 ? 'grab' : 'auto';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const y = e.pageY - container.offsetTop;
+            const walkX = (x - startX) * 1.5;
+            const walkY = (y - startY) * 1.5;
+            container.scrollLeft = scrollLeft - walkX;
+            container.scrollTop = scrollTop - walkY;
+        });
+
+        function onZoomIn(e) {
+            if (e) e.preventDefault();
+            if (scaleMultiplier >= 2.5) return;
+            scaleMultiplier += 0.25;
+            applyZoom();
+        }
+
+        function onZoomOut(e) {
+            if (e) e.preventDefault();
+            if (scaleMultiplier <= 0.5) return;
+            scaleMultiplier -= 0.25;
+            applyZoom();
+        }
+
+        function onPrevPage() {
+            if (!pdfDoc || pageNum <= 1) return;
+            pageNum--;
+            renderPageHighRes(pageNum);
+        }
+
+        function onNextPage() {
+            if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            renderPageHighRes(pageNum);
+        }
+
+        if (document.getElementById('zoom_in')) {
+            document.getElementById('zoom_in').addEventListener('click', onZoomIn);
+            document.getElementById('zoom_out').addEventListener('click', onZoomOut);
+        }
+
+        // Keyboard shortcuts for PDF viewer
+        document.addEventListener('keydown', function(e) {
+            const resumeSection = document.getElementById('resume');
+            
+            // Do not interfere if user is typing in an input
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+
+            // Only respond to keyboard shortcuts if the resume viewer is visible and the user is focused on the PDF container
+            if (resumeSection && (resumeSection.style.display === 'block')) {
+                
+                // Trigger if the user has focused directly into the viewer container
+                const isFocused = container && container.contains(document.activeElement);
+                
+                if (isFocused) {
+                    if (e.key === '+' || e.key === '=') {
+                        onZoomIn(e);
+                    } else if (e.key === '-' || e.key === '_') {
+                        onZoomOut(e);
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        onPrevPage();
+                    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        onNextPage();
+                    }
+                }
+            }
+        });
+
+        // Load PDF when the resume section becomes visible
+        let pdfLoaded = window.pdfLoadedVar || false;
+
+        // Override the existing click listener for '#resume'
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            const targetId = anchor.getAttribute('href');
+            if (targetId === '#resume') {
+                // Clone to remove old listeners
+                const newAnchor = anchor.cloneNode(true);
+                anchor.parentNode.replaceChild(newAnchor, anchor);
+                
+                newAnchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        if (targetElement.style.display === 'none' || targetElement.style.display === '') {
+                            targetElement.style.display = 'block';
+                            this.textContent = 'Hide Resume';
+                            
+                            // Load PDF if not loaded yet
+                            if (!window.pdfLoadedVar) {
+                                window.pdfLoadedVar = true;
+                                pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
+                                    pdfDoc = pdfDoc_;
+                                    document.getElementById('page_count').textContent = pdfDoc.numPages;
+                                    renderPageHighRes(pageNum);
+                                }).catch(function(error) {
+                                    console.error('Error loading PDF: ', error);
+                                });
+                            }
+
+                            // Short delay to let the browser process display: block before animating
+                            setTimeout(() => {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 50);
+                        } else {
+                            targetElement.style.display = 'none';
+                            this.textContent = 'View Resume';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
