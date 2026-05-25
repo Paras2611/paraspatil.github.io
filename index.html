@@ -467,6 +467,23 @@
             transition: var(--transition);
             box-shadow: 0 4px 15px rgba(163, 193, 173, 0.15); /* Teal glow */
             border: 1px solid rgba(163, 193, 173, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .pill.show {
+            animation: fadeInPill 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInPill {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .pill:hover {
@@ -512,10 +529,6 @@
             cursor: pointer;
         }
         
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-
         /* Modal styles */
         .modal-overlay {
             display: none;
@@ -633,10 +646,12 @@
             }
         }
 
-        .project-card:hover {
-            transform: translateY(-5px) scale(1.02); /* Inline JS scales will beat this on background cards ensuring no jumps! */
-            box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.08), 0 20px 50px rgba(47, 62, 70, 0.15);
-            border-color: rgba(255, 255, 255, 1);
+        @media (hover: hover) {
+            .project-card:hover {
+                transform: translateY(-5px) scale(1.02); /* Inline JS scales will beat this on background cards ensuring no jumps! */
+                box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.08), 0 20px 50px rgba(47, 62, 70, 0.15);
+                border-color: rgba(255, 255, 255, 1);
+            }
         }
 
         .project-card h3 {
@@ -765,8 +780,16 @@
             padding: 1.2rem 2.5rem;
             background: var(--bg-color);
             border-radius: 100px;
+            border: 2px solid transparent;
             transition: var(--transition);
             max-width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-link.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .link-text {
@@ -774,13 +797,39 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             min-width: 0;
+            display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
         }
 
-        .contact-link:hover {
-            background: var(--primary);
-            color: var(--surface);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(58, 90, 64, 0.15);
+        @media (hover: hover) {
+            .contact-link:hover .link-text {
+                transform: translateX(5px);
+            }
+
+            .contact-link:hover {
+                border-color: var(--primary);
+                background: var(--bg-color);
+                color: var(--primary);
+                transform: translateY(-4px) scale(1.02);
+                box-shadow: 0 10px 25px rgba(58, 90, 64, 0.2), 0 0 15px rgba(58, 90, 64, 0.15); /* Soft glow shadow */
+                transition-delay: 0.08s;
+            }
+        }
+
+        .contact-link:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @media (hover: hover) {
+            .contact-link:hover svg {
+                animation: iconPulse 1.5s ease-in-out infinite;
+            }
         }
 
         /* Footer */
@@ -1665,6 +1714,60 @@
 
         projectCards.forEach(card => cardObserver.observe(card));
 
+        // Staggered Fade-In for Skill Pills
+        const pills = document.querySelectorAll('.pill');
+        let pillDelayCounter = 0;
+        let lastPillTriggerTime = 0;
+        
+        const pillObserver = new IntersectionObserver((entries) => {
+            const visibleEntries = entries.filter(e => e.isIntersecting)
+                                          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            
+            visibleEntries.forEach((entry) => {
+                const now = Date.now();
+                if (now - lastPillTriggerTime > 500) { 
+                    pillDelayCounter = 0; 
+                }
+                lastPillTriggerTime = now;
+                
+                setTimeout(() => {
+                    entry.target.classList.add('show');
+                }, pillDelayCounter * 50);
+                
+                pillDelayCounter++;
+                pillObserver.unobserve(entry.target);
+            });
+        }, { rootMargin: '0px 0px -5% 0px', threshold: 0.1 });
+
+        pills.forEach(pill => pillObserver.observe(pill));
+
+        // Staggered Fade-In for Contact Links
+        const contactLinks = document.querySelectorAll('.contact-link');
+        let contactDelayCounter = 0;
+        let lastContactTriggerTime = 0;
+        
+        const contactObserver = new IntersectionObserver((entries) => {
+            const visibleEntries = entries.filter(e => e.isIntersecting)
+                                          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            
+            visibleEntries.forEach((entry) => {
+                const now = Date.now();
+                if (now - lastContactTriggerTime > 500) { 
+                    contactDelayCounter = 0; 
+                }
+                lastContactTriggerTime = now;
+                
+                setTimeout(() => {
+                    entry.target.classList.add('show');
+                }, contactDelayCounter * 150);
+                
+                contactDelayCounter++;
+                contactObserver.unobserve(entry.target);
+            });
+        }, { rootMargin: '0px 0px -5% 0px', threshold: 0.1 });
+
+        contactLinks.forEach(link => contactObserver.observe(link));
+
         // Consolidated, High-Performance Scroll Listener (Separating Reads/Writes to prevent layout thrashing)
         let ticking = false;
         
@@ -1717,14 +1820,14 @@
                             const progress = 1 - (distanceToNext / effectTriggerDistance);
                             
                             // Push back (scale down), Dim, and apply blur based on progress
-                            scale = 1 - (0.08 * progress);
-                            brightness = 1 - (0.35 * progress);
-                            blurVal = 10 * progress;
+                            scale = 1 - (0.05 * progress);
+                            brightness = 1 - (0.2 * progress);
+                            blurVal = 0; // Removed blur to keep it visible
                         } else if (distanceToNext <= 0) {
                             // Fully covered
-                            scale = 0.92;
-                            brightness = 0.65;
-                            blurVal = 10;
+                            scale = 0.95;
+                            brightness = 0.8;
+                            blurVal = 0; // Removed blur to keep it visible
                         }
 
                         // Ensure we don't interrupt initial pop-in animation
@@ -2010,6 +2113,8 @@
         // Magnetic hover effect
         document.querySelectorAll(".project-card").forEach(card => {
             card.addEventListener("mousemove", (e) => {
+                if (window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(hover: none)").matches) return;
+                
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
@@ -2022,6 +2127,9 @@
             });
 
             card.addEventListener("mouseleave", () => {
+                if (window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(hover: none)").matches) {
+                    return;
+                }
                 card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
             });
         });
