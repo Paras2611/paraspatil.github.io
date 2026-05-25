@@ -1801,6 +1801,41 @@
                     }, 1200);
                 }
             });
+
+            card.addEventListener('click', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // create multiple sparkles on click
+                for (let i = 0; i < 6; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'card-sparkle';
+                    
+                    const offsetX = (Math.random() - 0.5) * 40;
+                    const offsetY = (Math.random() - 0.5) * 40;
+                    sparkle.style.left = `${x + offsetX}px`;
+                    sparkle.style.top = `${y + offsetY}px`;
+                    
+                    const tx = `${(Math.random() - 0.5) * 80}px`;
+                    const ty = `${(Math.random() - 0.5) * 80 - 20}px`; 
+                    sparkle.style.setProperty('--tx', tx);
+                    sparkle.style.setProperty('--ty', ty);
+                    
+                    const scale = 0.6 + Math.random() * 0.8;
+                    sparkle.style.width = `${12 * scale}px`;
+                    sparkle.style.height = `${12 * scale}px`;
+                    
+                    // Add slight random delay for explosion effect
+                    sparkle.style.animationDelay = `${Math.random() * 0.1}s`;
+
+                    card.appendChild(sparkle);
+
+                    setTimeout(() => {
+                        if(sparkle.parentNode === card) card.removeChild(sparkle);
+                    }, 1200 + 100);
+                }
+            });
         });
 
         // Staggered Fade-In for Skill Pills
