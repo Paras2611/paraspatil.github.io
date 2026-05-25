@@ -860,7 +860,10 @@
 
             .project-card {
                 padding: 1.5rem;
-                position: static;
+                position: sticky;
+                max-height: calc(100vh - 140px);
+                overflow-y: auto;
+                overflow-x: hidden;
             }
             
             .project-card-inner-grid {
