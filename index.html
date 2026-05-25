@@ -139,6 +139,7 @@
             font-weight: 700;
             letter-spacing: -0.02em;
             color: var(--primary);
+            white-space: nowrap;
         }
 
         .nav-links {
@@ -249,6 +250,7 @@
             justify-content: center;
             text-align: center;
             padding-top: 6rem;
+            padding-bottom: 2rem;
         }
 
         .hero-content {
@@ -528,6 +530,44 @@
             
             cursor: pointer;
         }
+
+        .project-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: inherit;
+            background: radial-gradient(
+                900px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(163, 193, 173, 0.12),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-sparkle {
+            position: absolute;
+            background: var(--primary);
+            clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+            pointer-events: none;
+            z-index: 5;
+            animation: sparkleFloat 1.2s ease-out forwards;
+            opacity: 0;
+            transform-origin: center;
+        }
+
+        @keyframes sparkleFloat {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; transform: scale(1) rotate(45deg); }
+            80% { opacity: 0.6; transform: scale(1) rotate(90deg) translate(calc(var(--tx) * 0.8), calc(var(--ty) * 0.8)); }
+            100% { transform: scale(0) rotate(135deg) translate(var(--tx), var(--ty)); opacity: 0; }
+        }
         
         /* Modal styles */
         .modal-overlay {
@@ -648,8 +688,8 @@
 
         @media (hover: hover) {
             .project-card:hover {
-                transform: translateY(-5px) scale(1.02); /* Inline JS scales will beat this on background cards ensuring no jumps! */
-                box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.08), 0 20px 50px rgba(47, 62, 70, 0.15);
+                transform: translateY(-8px) scale(1.03); /* Inline JS scales will beat this on background cards ensuring no jumps! */
+                box-shadow: 0 -12px 40px rgba(47, 62, 70, 0.1), 0 30px 60px rgba(47, 62, 70, 0.25);
                 border-color: rgba(255, 255, 255, 1);
             }
         }
@@ -880,6 +920,15 @@
                 top: 1.5rem;
             }
             
+            #hero {
+                padding-top: 8.5rem; /* Ensure hero content clears the header on mobile */
+                align-items: flex-start; /* Prevent perfect centering from pushing it under header when content is tall */
+            }
+            
+            .hero-content {
+                margin-top: 2rem; /* Additional offset from the top */
+            }
+
             nav {
                 padding: 1rem 1.5rem;
             }
@@ -1712,7 +1761,47 @@
             });
         }, observerOptions);
 
-        projectCards.forEach(card => cardObserver.observe(card));
+        projectCards.forEach(card => {
+            cardObserver.observe(card);
+            
+            let lastSparkleTime = 0;
+            // Subtle Radial Glow Mouse Hover Effect & Sparkles
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                // Sparkle emission
+                const now = Date.now();
+                if (now - lastSparkleTime > 100) { 
+                    lastSparkleTime = now;
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'card-sparkle';
+                    
+                    const offsetX = (Math.random() - 0.5) * 60;
+                    const offsetY = (Math.random() - 0.5) * 60;
+                    sparkle.style.left = `${x + offsetX}px`;
+                    sparkle.style.top = `${y + offsetY}px`;
+                    
+                    const tx = `${(Math.random() - 0.5) * 40}px`;
+                    const ty = `${(Math.random() - 0.5) * 40 - 20}px`; // bias upwards
+                    sparkle.style.setProperty('--tx', tx);
+                    sparkle.style.setProperty('--ty', ty);
+                    
+                    const scale = 0.4 + Math.random() * 0.6;
+                    sparkle.style.width = `${12 * scale}px`;
+                    sparkle.style.height = `${12 * scale}px`;
+
+                    card.appendChild(sparkle);
+
+                    setTimeout(() => {
+                        if(sparkle.parentNode === card) card.removeChild(sparkle);
+                    }, 1200);
+                }
+            });
+        });
 
         // Staggered Fade-In for Skill Pills
         const pills = document.querySelectorAll('.pill');
