@@ -824,12 +824,12 @@
             transition: var(--transition);
             max-width: 100%;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(20px) scale(0.95);
         }
 
         .contact-link.show {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .link-text {
@@ -872,6 +872,28 @@
             }
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         /* Footer */
         footer {
             text-align: center;
@@ -1665,14 +1687,14 @@
                 <p>Feel free to reach out for collaborations, opportunities, or just a friendly hello!</p>
                 
                 <div class="contact-links">
-                    <a href="mailto:pjagadish781@gmail.com" class="contact-link">
-                        <span>📧</span> <span class="link-text">pjagadish781@gmail.com</span>
+                    <a href="mailto:paras.jagadish.patil@gmail.com" class="contact-link">
+                        <span>📧</span> <span class="link-text">Email</span>
                     </a>
                     <a href="https://github.com/paras2611" target="_blank" rel="noopener noreferrer" class="contact-link">
-                        <span>💻</span> <span class="link-text">github.com/paras2611</span>
+                        <span>💻</span> <span class="link-text">Github</span>
                     </a>
                     <a href="https://linkedin.com/in/paraspatil2611" target="_blank" rel="noopener noreferrer" class="contact-link">
-                        <span>👔</span> <span class="link-text">linkedin.com/paraspatil2611</span>
+                        <span>👔</span> <span class="link-text">LinkedIn</span>
                     </a>
                 </div>
             </div>
@@ -1883,7 +1905,7 @@
                 
                 setTimeout(() => {
                     entry.target.classList.add('show');
-                }, contactDelayCounter * 150);
+                }, contactDelayCounter * 200);
                 
                 contactDelayCounter++;
                 contactObserver.unobserve(entry.target);
@@ -1891,6 +1913,34 @@
         }, { rootMargin: '0px 0px -5% 0px', threshold: 0.1 });
 
         contactLinks.forEach(link => contactObserver.observe(link));
+
+        // Toast Functionality
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // Trigger animation
+            requestAnimationFrame(() => toast.classList.add('show'));
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+            }, 3000);
+        }
+
+        contactLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (link.getAttribute('href').startsWith('mailto:')) {
+                    const email = link.getAttribute('href').replace('mailto:', '');
+                    navigator.clipboard.writeText(email);
+                    showToast('Email address copied to clipboard!');
+                } else {
+                    showToast('Opening link...');
+                }
+            });
+        });
 
         // Consolidated, High-Performance Scroll Listener (Separating Reads/Writes to prevent layout thrashing)
         let ticking = false;
@@ -2262,23 +2312,42 @@
         document.addEventListener("DOMContentLoaded", () => {
             const typewriterElement = document.getElementById('typewriter-text');
             if (typewriterElement) {
-                const textToType = typewriterElement.textContent;
-                typewriterElement.textContent = '';
-                
+                const titles = ['Computer Science Graduate', 'Full Stack Developer'];
+                let titleIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+
                 const textSpan = document.createElement('span');
                 const cursorSpan = document.createElement('span');
                 cursorSpan.className = 'typewriter-cursor';
                 
+                typewriterElement.textContent = '';
                 typewriterElement.appendChild(textSpan);
                 typewriterElement.appendChild(cursorSpan);
 
-                let i = 0;
                 function typeWriter() {
-                    if (i < textToType.length) {
-                        textSpan.textContent += textToType.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 40); // Type speed
+                    const currentTitle = titles[titleIndex];
+                    
+                    if (isDeleting) {
+                        textSpan.textContent = currentTitle.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        textSpan.textContent = currentTitle.substring(0, charIndex + 1);
+                        charIndex++;
                     }
+                    
+                    let typeSpeed = isDeleting ? 30 : 60;
+                    
+                    if (!isDeleting && charIndex === currentTitle.length) {
+                        isDeleting = true;
+                        typeSpeed = 1500; // Pause at end
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        titleIndex = (titleIndex + 1) % titles.length;
+                        typeSpeed = 500;
+                    }
+                    
+                    setTimeout(typeWriter, typeSpeed);
                 }
 
                 // Start after initial page load animation
