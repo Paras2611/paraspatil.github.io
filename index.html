@@ -1754,7 +1754,8 @@
                             this.textContent = 'Hide Resume';
                             // Short delay to let the browser process display: block before animating
                             setTimeout(() => {
-                                targetElement.scrollIntoView({
+                                const scrollTarget = targetElement.querySelector('.resume-preview-card') || targetElement;
+                                scrollTarget.scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'center'
                                 });
@@ -2270,7 +2271,7 @@
 
                             // Short delay to let the browser process display: block before animating
                             setTimeout(() => {
-                                targetElement.scrollIntoView({
+                                const scrollTarget = targetElement.querySelector(".resume-preview-card") || targetElement; scrollTarget.scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'center'
                                 });
